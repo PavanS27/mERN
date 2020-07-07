@@ -1,0 +1,107 @@
+.card {
+  position: absolute;
+  padding: 30px;
+  min-width: 90vw;
+  height: 450px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  box-shadow: 1px 1px 10px lightgray;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.card1 {
+  position: absolute;
+  padding: 30px;
+  min-width: 90vw;
+  height: 300px;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  box-shadow: 1px 1px 10px lightgray;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.lheader {
+  font-family: "Grand Hotel", cursive !important;
+}
+#input1[type="text"]:focus {
+  background-color: rgb(243, 243, 243);
+  transition: 0.3s ease;
+  border-bottom: 1px solid rgb(74, 74, 252) !important;
+}
+#input2[type="text"]:focus {
+  background-color: rgb(243, 243, 243);
+  transition: 0.3s ease;
+  border-bottom: 1px solid rgb(74, 74, 252) !important;
+}
+
+.butt {
+  position: absolute;
+  padding: 10px;
+  width: 75vw;
+  border-radius: 3px;
+  outline: none;
+  border: none;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(8, 93, 252);
+  color: white;
+}
+.butt1 {
+  position: absolute;
+  padding: 10px;
+  width: 75vw;
+  border-radius: 3px;
+  outline: none;
+  border: none;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(8, 93, 252);
+  color: white;
+}
+.butt2 {
+  position: absolute;
+  padding: 10px;
+  width: 60vw;
+  border-radius: 3px;
+  outline: none;
+  border: none;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(8, 93, 252);
+  color: white;
+}
+.or {
+  display: flex;
+  flex-direction: row;
+  margin-top: 70px;
+  /* position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+}
+.or:before,
+.or:after {
+  content: "";
+  border-bottom: 1px solid grey;
+  flex: 1 1;
+  margin: auto;
+}
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.item {
+  width: 32%;
+}
+
+#toast-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
