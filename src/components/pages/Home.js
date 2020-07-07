@@ -100,6 +100,33 @@ export default function Home() {
         console.log(err);
       });
   };
+
+  const makeComment = (text, postId) => {
+    fetch("/comment", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        postId,
+        text,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        const newData = data.map((item) => {
+          if (item._id == result._id) {
+            return result;
+          } else {
+            return item;
+          }
+        });
+        setData(newData);
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div>
       {data.map((item) => {
@@ -120,10 +147,20 @@ export default function Home() {
               title="Paella dish"
             />
             <CardContent>
-              <h5>{item.title}</h5>
+              <h5 style={{ textTransform: "capitalize", textAlign: "center" }}>
+                {item.title}
+              </h5>
               <Typography variant="body2" color="textSecondary" component="p">
                 {item.body}
               </Typography>
+              <h5 style={{}}>Comments</h5>
+              {item.comments.map((record) => {
+                return (
+                  <h6>
+                    <b> {record.postedBy.name}</b> {record.text}
+                  </h6>
+                );
+              })}
             </CardContent>
             <h6>{item.likes.length} likes</h6>
             <CardActions disableSpacing>
@@ -146,15 +183,21 @@ export default function Home() {
                   ></i>
                 )}
               </IconButton>
-              <IconButton aria-label="share"></IconButton>
+              <div style={{ marginLeft: 10 }}>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    makeComment(e.target[0].value, item._id);
+                  }}
+                >
+                  <input
+                    type="text"
+                    placeholder="Add Comment"
+                    style={{ width: "80vw" }}
+                  />
+                </form>
+              </div>
             </CardActions>
-            <div style={{ marginLeft: 10 }}>
-              <input
-                type="text"
-                placeholder="Add Comment"
-                style={{ width: "90vw" }}
-              />
-            </div>
           </Card>
         );
       })}
