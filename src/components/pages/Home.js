@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -9,8 +9,7 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
+import { userContext } from "../../App";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
   const classes = useStyles();
   const [data, setData] = useState([]);
+  const { state, dispatch } = useContext(userContext);
   useEffect(() => {
     fetch("/allposts", {
       headers: {
@@ -39,10 +39,67 @@ export default function Home() {
     })
       .then((res) => res.json())
       .then((result) => {
+        console.log(result);
         setData(result.posts);
       });
   }, []);
 
+  const likePost = (id) => {
+    fetch("/like", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        postId: id,
+      }),
+    })
+      .then((res) => {
+        res.json();
+      })
+      .then((result) => {
+        const newData = data.map((item) => {
+          if (item._id == result._id) {
+            return result;
+          } else {
+            return item;
+          }
+        });
+        setData(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const unlikePost = (id) => {
+    fetch("/unlike", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        postId: id,
+      }),
+    })
+      .then((res) => {
+        res.json();
+      })
+      .then((result) => {
+        const newData = data.map((item) => {
+          if (item._id == result._id) {
+            return result;
+          } else {
+            return item;
+          }
+        });
+        setData(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div>
       {data.map((item) => {
@@ -68,13 +125,28 @@ export default function Home() {
                 {item.body}
               </Typography>
             </CardContent>
+            <h6>{item.likes.length} likes</h6>
             <CardActions disableSpacing>
               <IconButton aria-label="add to favorites">
-                <FavoriteIcon />
+                {item.likes.includes(state._id) ? (
+                  <i
+                    onClick={() => {
+                      unlikePost(item._id);
+                    }}
+                    className="fa fa-thumbs-down"
+                    style={{ fontSize: "24px" }}
+                  ></i>
+                ) : (
+                  <i
+                    onClick={() => {
+                      likePost(item._id);
+                    }}
+                    className="fa fa-heart"
+                    style={{ fontSize: "24px" }}
+                  ></i>
+                )}
               </IconButton>
-              <IconButton aria-label="share">
-                <ShareIcon />
-              </IconButton>
+              <IconButton aria-label="share"></IconButton>
             </CardActions>
             <div style={{ marginLeft: 10 }}>
               <input

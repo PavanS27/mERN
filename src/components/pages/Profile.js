@@ -1,6 +1,19 @@
-import React from "react";
-
+import React, { useEffect, useState, useContext } from "react";
+import { userContext } from "../../App";
 export default function Profile() {
+  const [mypics, setPics] = useState([]);
+  const { state, dispatch } = useContext(userContext);
+  useEffect(() => {
+    fetch("/myposts", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        setPics(result.myPost);
+      });
+  }, []);
   return (
     <div style={{ maxWidth: "600px", margin: "0px auto" }}>
       <div
@@ -17,7 +30,7 @@ export default function Profile() {
           />
         </div>
         <div>
-          <h4>Sona</h4>
+          <h4>{state ? state.name : "Loading..."}</h4>
           <div
             style={{
               display: "flex",
@@ -32,30 +45,11 @@ export default function Profile() {
         </div>
       </div>
       <div className="gallery">
-        <img
-          src="https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
-          className="item"
-        />
-        <img
-          src="https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
-          className="item"
-        />
-        <img
-          src="https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
-          className="item"
-        />
-        <img
-          src="https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
-          className="item"
-        />
-        <img
-          src="https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
-          className="item"
-        />
-        <img
-          src="https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
-          className="item"
-        />
+        {mypics.map((item) => {
+          return (
+            <img key={item._id} src={item.photo} className="item" alt="post" />
+          );
+        })}
       </div>
     </div>
   );
