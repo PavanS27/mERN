@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { userContext } from "../../App";
 import "../../App.css";
 import { Link, useHistory } from "react-router-dom";
 import M from "materialize-css";
 
 export default function Login() {
   const history = useHistory();
-
+  const { state, dispatch } = useContext(userContext);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const postData = () => {
@@ -34,6 +35,7 @@ export default function Login() {
         } else {
           localStorage.setItem("jwt", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
+          dispatch({ type: "USER", payload: data.user });
           M.toast({
             html: "Signed In Successfully",
             classes: "#2e7d32 green darken-3",
@@ -54,7 +56,7 @@ export default function Login() {
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
-        type="text"
+        type="password"
         placeholder="Password"
         id="input2"
         value={password}

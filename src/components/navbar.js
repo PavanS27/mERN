@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -6,7 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { userContext } from "../App";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +25,53 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
   const classes = useStyles();
+  const history = useHistory();
+  const { state, dispatch } = useContext(userContext);
+  const renderList = () => {
+    if (state) {
+      return [
+        <>
+          <Button>
+            <Link to="/profile" style={{ color: "black", fontWeight: 600 }}>
+              Profile
+            </Link>
+          </Button>
+          <Button>
+            <Link to="/createPost" style={{ color: "black", fontWeight: 600 }}>
+              Posts
+            </Link>
+          </Button>
+          <Button>
+            <a
+              onClick={() => {
+                localStorage.clear();
+                dispatch({ type: "CLEAR" });
+                history.push("/login");
+              }}
+              style={{ color: "black", fontWeight: 600 }}
+            >
+              Logout
+            </a>
+          </Button>
+        </>,
+      ];
+    } else {
+      return [
+        <>
+          <Button>
+            <Link to="/login" style={{ color: "black", fontWeight: 600 }}>
+              Login
+            </Link>
+          </Button>
+          <Button>
+            <Link to="/signup" style={{ color: "black", fontWeight: 600 }}>
+              Signup
+            </Link>
+          </Button>
+        </>,
+      ];
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -39,23 +87,13 @@ export default function Navbar() {
           </IconButton>
           <Typography variant="h4" className={classes.title}>
             <Link
-              to="/"
+              to={state ? "/" : "/login"}
               style={{ color: "black", fontFamily: "'Grand Hotel', cursive" }}
             >
               Instagram
             </Link>
           </Typography>
-          <Button>
-            <Link to="/login" style={{ color: "black", fontWeight: 600 }}>
-              Login
-            </Link>
-          </Button>
-          <Button>
-            {" "}
-            <Link to="/signup" style={{ color: "black", fontWeight: 600 }}>
-              Signup
-            </Link>
-          </Button>
+          {renderList()}
         </Toolbar>
       </AppBar>
     </div>

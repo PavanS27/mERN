@@ -25,12 +25,12 @@
 .lheader {
   font-family: "Grand Hotel", cursive !important;
 }
-#input1[type="text"]:focus {
+#input1:focus {
   background-color: rgb(243, 243, 243);
   transition: 0.3s ease;
   border-bottom: 1px solid rgb(74, 74, 252) !important;
 }
-#input2[type="text"]:focus {
+#input2:focus {
   background-color: rgb(243, 243, 243);
   transition: 0.3s ease;
   border-bottom: 1px solid rgb(74, 74, 252) !important;

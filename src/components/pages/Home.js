@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -30,46 +30,62 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    fetch("/allposts", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        setData(result.posts);
+      });
+  }, []);
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
-          </Avatar>
-        }
-        title="Username"
-        subheader="September 14, 2016"
-      />
-      <CardMedia
-        className={classes.media}
-        image="https://images.unsplash.com/photo-1532767153582-b1a0e5145009?ixlib=rb-1.2.1&w=1000&q=80"
-        title="Paella dish"
-      />
-      <CardContent>
-        <h5>Title</h5>
-        <Typography variant="body2" color="textSecondary" component="p">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-      </CardActions>
-      <div style={{ marginLeft: 10 }}>
-        <input
-          type="text"
-          placeholder="Add Comment"
-          style={{ width: "90vw" }}
-        />
-      </div>
-    </Card>
+    <div>
+      {data.map((item) => {
+        return (
+          <Card className={classes.root}>
+            <CardHeader
+              avatar={
+                <Avatar aria-label="recipe" className={classes.avatar}>
+                  R
+                </Avatar>
+              }
+              title={item.postedBy.name}
+              subheader="September 14, 2016"
+            />
+            <CardMedia
+              className={classes.media}
+              image={item.photo}
+              title="Paella dish"
+            />
+            <CardContent>
+              <h5>{item.title}</h5>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {item.body}
+              </Typography>
+            </CardContent>
+            <CardActions disableSpacing>
+              <IconButton aria-label="add to favorites">
+                <FavoriteIcon />
+              </IconButton>
+              <IconButton aria-label="share">
+                <ShareIcon />
+              </IconButton>
+            </CardActions>
+            <div style={{ marginLeft: 10 }}>
+              <input
+                type="text"
+                placeholder="Add Comment"
+                style={{ width: "90vw" }}
+              />
+            </div>
+          </Card>
+        );
+      })}
+    </div>
   );
 }
