@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { userContext } from "../../App";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -169,7 +170,17 @@ export default function Home() {
                   )}
                 </IconButton>
               }
-              title={item.postedBy.name}
+              title={
+                <Link
+                  to={
+                    item.postedBy._id !== state._id
+                      ? "/profile/" + item.postedBy._id
+                      : "/profile/"
+                  }
+                >
+                  <h6 style={{ color: "black" }}>{item.postedBy.name}</h6>
+                </Link>
+              }
               subheader="September 14, 2016"
             />
             <CardMedia
