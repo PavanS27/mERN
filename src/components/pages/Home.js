@@ -9,6 +9,7 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { userContext } from "../../App";
 
 const useStyles = makeStyles((theme) => ({
@@ -127,6 +128,23 @@ export default function Home() {
       })
       .catch((err) => console.log(err));
   };
+
+  const deletePost = (postid) => {
+    fetch(`/deletePost/${postid}`, {
+      method: "delete",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        const newData = data.filter((item) => {
+          return item._id !== result._id;
+        });
+        setData(newData);
+      });
+  };
   return (
     <div>
       {data.map((item) => {
@@ -137,6 +155,19 @@ export default function Home() {
                 <Avatar aria-label="recipe" className={classes.avatar}>
                   R
                 </Avatar>
+              }
+              action={
+                <IconButton aria-label="settings">
+                  {item.postedBy._id === state._id && (
+                    <i
+                      onClick={() => {
+                        deletePost(item._id);
+                      }}
+                      className="fa fa-trash-o"
+                      style={{ fontSize: "24px" }}
+                    ></i>
+                  )}
+                </IconButton>
               }
               title={item.postedBy.name}
               subheader="September 14, 2016"

@@ -12,6 +12,7 @@ import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import CreatePost from "./components/pages/CreatePost";
 import { reducer, initialState } from "./reducers/userReducer";
+import UserProfile from "./components/pages/UserProfile";
 
 export const userContext = createContext();
 
@@ -29,10 +30,11 @@ const Routing = () => {
   return (
     <Switch>
       <Route exact path="/" component={Home}></Route>
-      <Route path="/profile" component={Profile}></Route>
+      <Route exact path="/profile" component={Profile}></Route>
       <Route path="/login" component={Login}></Route>
       <Route path="/signup" component={Signup}></Route>
       <Route path="/createPost" component={CreatePost}></Route>
+      <Route path="/profile/:userid" component={UserProfile}></Route>
     </Switch>
   );
 };
