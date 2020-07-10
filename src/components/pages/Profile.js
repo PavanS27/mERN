@@ -38,9 +38,9 @@ export default function Profile() {
               width: "110%",
             }}
           >
-            <small>40 posts</small>
-            <small>40 followers</small>
-            <small>40 following</small>
+            <small>{mypics.length} posts</small>
+            <small>{state ? state.followers.length : "0"} followers</small>
+            <small>{state ? state.following.length : "0"} following</small>
           </div>
         </div>
       </div>

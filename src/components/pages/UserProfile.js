@@ -122,9 +122,33 @@ export default function UserProfile() {
                 <small>{userProfile.user.following.length} following</small>
               </div>
               {showFollow ? (
-                <button onClick={() => followUser()}>Follow</button>
+                <button
+                  style={{
+                    backgroundColor: "rgb(8, 93, 252)",
+                    border: "none",
+                    outline: "none",
+                    color: "white",
+                    padding: "7px 15px",
+                    margin: "5px",
+                  }}
+                  onClick={() => followUser()}
+                >
+                  Follow
+                </button>
               ) : (
-                <button onClick={() => unfollowUser()}>Unfollow</button>
+                <button
+                  style={{
+                    backgroundColor: "rgb(8, 93, 252)",
+                    border: "none",
+                    outline: "none",
+                    color: "white",
+                    padding: "7px 15px",
+                    margin: "5px",
+                  }}
+                  onClick={() => unfollowUser()}
+                >
+                  Unfollow
+                </button>
               )}
             </div>
           </div>
