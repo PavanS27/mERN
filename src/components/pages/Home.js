@@ -69,6 +69,7 @@ export default function Home() {
           }
         });
         setData(newData);
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
@@ -146,6 +147,7 @@ export default function Home() {
         setData(newData);
       });
   };
+
   return (
     <div>
       {data.map((item) => {
@@ -154,7 +156,7 @@ export default function Home() {
             <CardHeader
               avatar={
                 <Avatar aria-label="recipe" className={classes.avatar}>
-                  R
+                  <img src={state ? state.name : "Loading..."} />
                 </Avatar>
               }
               action={
@@ -211,6 +213,7 @@ export default function Home() {
                   <i
                     onClick={() => {
                       unlikePost(item._id);
+                      window.location.reload();
                     }}
                     className="fa fa-thumbs-down"
                     style={{ fontSize: "24px" }}
@@ -219,6 +222,7 @@ export default function Home() {
                   <i
                     onClick={() => {
                       likePost(item._id);
+                      window.location.reload();
                     }}
                     className="fa fa-heart"
                     style={{ fontSize: "24px" }}
