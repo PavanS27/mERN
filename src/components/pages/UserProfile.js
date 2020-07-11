@@ -153,6 +153,7 @@ export default function UserProfile() {
               )}
             </div>
           </div>
+          <hr />
           <div className="gallery">
             {userProfile.posts.map((item) => {
               return (

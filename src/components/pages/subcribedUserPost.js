@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
   const classes = useStyles();
   const [data, setData] = useState([]);
-  const { state, dispatch } = useContext(userContext);
+  const { state } = useContext(userContext);
   useEffect(() => {
     fetch("/getsubpost", {
       headers: {
@@ -62,7 +62,7 @@ export default function Home() {
       })
       .then((result) => {
         const newData = data.map((item) => {
-          if (item._id == result._id) {
+          if (item._id === result._id) {
             return result;
           } else {
             return item;
@@ -90,7 +90,7 @@ export default function Home() {
       })
       .then((result) => {
         const newData = data.map((item) => {
-          if (item._id == result._id) {
+          if (item._id === result._id) {
             return result;
           } else {
             return item;
@@ -119,7 +119,7 @@ export default function Home() {
       .then((result) => {
         console.log(result);
         const newData = data.map((item) => {
-          if (item._id == result._id) {
+          if (item._id === result._id) {
             return result;
           } else {
             return item;

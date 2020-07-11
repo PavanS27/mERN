@@ -14,6 +14,7 @@ import CreatePost from "./components/pages/CreatePost";
 import { reducer, initialState } from "./reducers/userReducer";
 import UserProfile from "./components/pages/UserProfile";
 import subcribedUserPost from "./components/pages/subcribedUserPost";
+import Bottombar from "./components/fixedbar";
 
 export const userContext = createContext();
 
@@ -48,6 +49,7 @@ function App() {
       <Router>
         <Navbar />
         <Routing />
+        <Bottombar />
       </Router>
     </userContext.Provider>
   );

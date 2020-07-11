@@ -36,11 +36,7 @@ export default function Navbar() {
               Profile
             </Link>
           </Button>
-          <Button>
-            <Link to="/createPost" style={{ color: "black", fontWeight: 600 }}>
-              Posts
-            </Link>
-          </Button>
+
           <Button>
             <a
               onClick={() => {
@@ -77,14 +73,6 @@ export default function Navbar() {
     <div className={classes.root}>
       <AppBar position="static" style={{ backgroundColor: "white" }}>
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography variant="h4" className={classes.title}>
             <Link
               to={state ? "/" : "/login"}

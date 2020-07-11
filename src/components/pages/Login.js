@@ -6,7 +6,7 @@ import M from "materialize-css";
 
 export default function Login() {
   const history = useHistory();
-  const { state, dispatch } = useContext(userContext);
+  const { dispatch } = useContext(userContext);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const postData = () => {

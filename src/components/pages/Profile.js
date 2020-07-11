@@ -4,7 +4,7 @@ export default function Profile() {
   const [mypics, setPics] = useState([]);
   const { state, dispatch } = useContext(userContext);
   const [image, setImage] = useState("");
-  const [url, setUrl] = useState("");
+
   useEffect(() => {
     fetch("/myposts", {
       headers: {
@@ -29,13 +29,24 @@ export default function Profile() {
       })
         .then((res) => res.json())
         .then((data) => {
-          setUrl(data.url);
-          localStorage.setItem(
-            "user",
-            JSON.stringify({ ...state, pic: data.url })
-          );
-          dispatch({ type: "UPDATEPIC", payload: data.url });
-          window.location.reload();
+          fetch("/updatepic", {
+            method: "put",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("jwt"),
+            },
+            body: JSON.stringify({
+              pic: data.url,
+            }),
+          })
+            .then((res) => res.json())
+            .then((result) => {
+              localStorage.setItem(
+                "user",
+                JSON.stringify({ ...state, pic: data.pic })
+              );
+              dispatch({ type: "UPDATEPIC", payload: result.pic });
+            });
         });
     }
   }, [image]);
@@ -96,6 +107,7 @@ export default function Profile() {
           </div>
         </div>
       </div>
+      <hr />
       <div className="gallery">
         {mypics.map((item) => {
           return (

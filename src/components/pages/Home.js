@@ -16,8 +16,9 @@ import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: "550px",
-    marginTop: 30,
+
     margin: "10px auto",
+    marginBottom: 20,
   },
   media: {
     height: 0,
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
   const classes = useStyles();
   const [data, setData] = useState([]);
-  const { state, dispatch } = useContext(userContext);
+  const { state } = useContext(userContext);
   useEffect(() => {
     fetch("/allposts", {
       headers: {
@@ -156,7 +157,10 @@ export default function Home() {
             <CardHeader
               avatar={
                 <Avatar aria-label="recipe" className={classes.avatar}>
-                  <img src={state ? state.name : "Loading..."} />
+                  <img
+                    style={{ width: 70, height: 50 }}
+                    src="https://www.washingtonpost.com/resizer/ahl9OrgfUPFD5jWrjJNsHZ0HiC4=/1484x0/arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/3UUG4JSEFMI6VGOHDX6UEQNC7Y.jpg"
+                  />
                 </Avatar>
               }
               action={
@@ -183,7 +187,12 @@ export default function Home() {
                   <h6 style={{ color: "black" }}>{item.postedBy.name}</h6>
                 </Link>
               }
-              subheader="September 14, 2016"
+              subheader={
+                <p style={{ marginTop: "-1px" }}>
+                  <b>{item.likes.length} </b>
+                  {item.likes.length === 0 ? "like" : "likes"}
+                </p>
+              }
             />
             <CardMedia
               className={classes.media}
@@ -191,22 +200,27 @@ export default function Home() {
               title="Paella dish"
             />
             <CardContent>
-              <h5 style={{ textTransform: "capitalize", textAlign: "center" }}>
-                {item.title}
+              <h5 style={{ textTransform: "capitalize" }}>
+                Title : <small>{item.title}</small>
               </h5>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {item.body}
+              <Typography variant="body2" color="textPrimary" component="p">
+                <b>Caption</b> : {item.body}
               </Typography>
-              <h5 style={{}}>Comments</h5>
+
+              <h5 style={{ textAlign: "center" }}>
+                <u>Comments</u>
+              </h5>
+
               {item.comments.map((record) => {
                 return (
                   <h6>
-                    <b> {record.postedBy.name}</b> {record.text}
+                    <b> {record.postedBy.name}</b> : {record.text}
                   </h6>
                 );
               })}
+              <hr />
             </CardContent>
-            <h6>{item.likes.length} likes</h6>
+            <h6></h6>
             <CardActions disableSpacing>
               <IconButton aria-label="add to favorites">
                 {item.likes.includes(state._id) ? (
