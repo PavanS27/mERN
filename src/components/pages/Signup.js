@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../App.css";
 import { Link, useHistory } from "react-router-dom";
 import M from "materialize-css";
@@ -8,7 +8,28 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const postData = () => {
+  const [image, setImage] = useState("");
+  const [url, setUrl] = useState(undefined);
+
+  useEffect(() => {
+    if (url) {
+      uploadFields();
+    }
+  }, [url]);
+
+  const uploadPic = () => {
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "ista-clone");
+    data.append("cloud_name", "dbkwbufra");
+    fetch("	https://api.cloudinary.com/v1_1/dbkwbufra/image/upload", {
+      method: "post",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => setUrl(data.url));
+  };
+  const uploadFields = () => {
     if (
       !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
         email
@@ -26,6 +47,7 @@ export default function Signup() {
         name,
         password,
         email,
+        pic: url,
       }),
     })
       .then((res) => res.json())
@@ -38,6 +60,13 @@ export default function Signup() {
         }
       })
       .catch((err) => [console.log(err)]);
+  };
+  const postData = () => {
+    if (image) {
+      uploadPic();
+    } else {
+      uploadFields();
+    }
   };
   return (
     <div>
@@ -64,6 +93,15 @@ export default function Signup() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <div className="file-field input-field" style={{ marginTop: 50 }}>
+          <div className="btn">
+            <span>Upload Pic</span>
+            <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+          </div>
+          <div className="file-path-wrapper">
+            <input className="file-path validate" type="text" />
+          </div>
+        </div>
         <button className="butt1" onClick={() => postData()}>
           Sign Up
         </button>

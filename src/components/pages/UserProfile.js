@@ -3,10 +3,11 @@ import { userContext } from "../../App";
 import { useParams } from "react-router-dom";
 export default function UserProfile() {
   const [userProfile, setUserProfile] = useState(null);
-  const [showFollow, setShowFollow] = useState(true);
   const { state, dispatch } = useContext(userContext);
   const { userid } = useParams();
-
+  const [showFollow, setShowFollow] = useState(
+    state ? !state.following.includes(userid) : true
+  );
   useEffect(() => {
     loadData();
   }, []);
@@ -104,7 +105,7 @@ export default function UserProfile() {
           >
             <div>
               <img
-                src="https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
+                src={userProfile.user.pic}
                 style={{ width: "130px", height: "130px", borderRadius: "50%" }}
               />
             </div>

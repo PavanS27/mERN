@@ -25,7 +25,7 @@ export default function Profile() {
       >
         <div>
           <img
-            src="https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
+            src={state ? state.pic : "Loading..."}
             style={{ width: "130px", height: "130px", borderRadius: "50%" }}
           />
         </div>
