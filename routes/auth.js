@@ -6,6 +6,19 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config/keys");
 const requireLogin = require("../middleware/requireLogin");
+const nodemailer = require("nodemailer");
+const sendgrid = require("nodemailer-sendgrid-transport");
+
+//
+
+const transporter = nodemailer.createTransport(
+  sendgrid({
+    auth: {
+      api_key:
+        "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",
+    },
+  })
+);
 
 router.post("/signup", (req, res) => {
   const { name, password, email, pic } = req.body;
@@ -26,6 +39,12 @@ router.post("/signup", (req, res) => {
         });
 
         user.save().then((user) => {
+          transporter.sendMail({
+            to: user.email,
+            from: "No-reply@insta.com",
+            subject: "signup success",
+            html: "<h1>Welcome to CoronaGram</h1>",
+          });
           res.json({ message: "User save success" }).catch((err) => {
             console.log(err);
           });
