@@ -41,9 +41,9 @@ router.post("/signup", (req, res) => {
         user.save().then((user) => {
           transporter.sendMail({
             to: user.email,
-            from: "No-reply@insta.com",
-            subject: "signup success",
-            html: "<h1>Welcome to CoronaGram</h1>",
+            from: "No reply@insta.com",
+            subject: "Signup success",
+            html: "<h1>Welcome </h1>",
           });
           res.json({ message: "User save success" }).catch((err) => {
             console.log(err);

@@ -56,7 +56,7 @@ export default function Signup() {
           M.toast({ html: data.error, classes: "#c62828 red darken-3" });
         } else {
           M.toast({ html: data.message, classes: "#2e7d32 green darken-3" });
-          history.push("/signin");
+          history.push("/login");
         }
       })
       .catch((err) => [console.log(err)]);
