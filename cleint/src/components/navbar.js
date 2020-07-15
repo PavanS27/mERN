@@ -1,13 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import { Link, useHistory } from "react-router-dom";
 import { userContext } from "../App";
+import M from "materialize-css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,13 +23,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Navbar() {
+  const searchModal = useRef(null);
   const classes = useStyles();
   const history = useHistory();
+  const [search, setSearch] = useState("");
+  useEffect(() => {
+    M.Modal.init(searchModal.current);
+  }, []);
   const { state, dispatch } = useContext(userContext);
   const renderList = () => {
     if (state) {
       return [
         <>
+          <Button>
+            <i
+              data-target="modal1"
+              className="fa fa-search modal-trigger"
+              style={{ fontSize: "17px" }}
+            ></i>
+          </Button>
           <Button>
             <Link to="/profile" style={{ color: "black", fontWeight: 600 }}>
               Profile
@@ -82,6 +93,30 @@ export default function Navbar() {
             </Link>
           </Typography>
           {renderList()}
+          <div id="modal1" className="modal" ref={searchModal}>
+            <div className="modal-content">
+              <input
+                type="text"
+                placeholder="Search User"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <ul className="collection" style={{ color: "black" }}>
+                <li className="collection-item">Alvin</li>
+                <li className="collection-item">Alvin</li>
+                <li className="collection-item">Alvin</li>
+                <li className="collection-item">Alvin</li>
+              </ul>
+            </div>
+            <div className="modal-footer">
+              <a
+                href="#!"
+                className="modal-close waves-effect waves-green btn-flat"
+              >
+                Agree
+              </a>
+            </div>
+          </div>
         </Toolbar>
       </AppBar>
     </div>
