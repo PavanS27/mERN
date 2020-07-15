@@ -27,6 +27,7 @@ export default function Navbar() {
   const classes = useStyles();
   const history = useHistory();
   const [search, setSearch] = useState("");
+  const [userName, setUserName] = useState([]);
   useEffect(() => {
     M.Modal.init(searchModal.current);
   }, []);
@@ -80,6 +81,23 @@ export default function Navbar() {
     }
   };
 
+  const fetchUsers = (query) => {
+    setSearch(query);
+    fetch("/search-users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        setUserName(result.user);
+      });
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static" style={{ backgroundColor: "white" }}>
@@ -99,21 +117,34 @@ export default function Navbar() {
                 type="text"
                 placeholder="Search User"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => fetchUsers(e.target.value)}
               />
               <ul className="collection" style={{ color: "black" }}>
-                <li className="collection-item">Alvin</li>
-                <li className="collection-item">Alvin</li>
-                <li className="collection-item">Alvin</li>
-                <li className="collection-item">Alvin</li>
+                {userName.map((item) => {
+                  return (
+                    <Link
+                      to={
+                        item._id !== state._id
+                          ? "/profile/" + item._id
+                          : "/profile"
+                      }
+                      onClick={() =>
+                        M.Modal.getInstance(searchModal.current).close()
+                      }
+                    >
+                      <li className="collection-item">{item.name}</li>
+                    </Link>
+                  );
+                })}
               </ul>
             </div>
             <div className="modal-footer">
               <a
                 href="#!"
+                onClick={() => setSearch("")}
                 className="modal-close waves-effect waves-green btn-flat"
               >
-                Agree
+                Close
               </a>
             </div>
           </div>
